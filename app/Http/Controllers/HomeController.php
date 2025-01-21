@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
 
 class HomeController extends Controller
 {
@@ -21,57 +23,63 @@ class HomeController extends Controller
      */
     public function create()
     {
-        return view('create');
+        $categories = Category::all();
+        return view('create',compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-       $post = new Post();
-       $post->name = $request->name;
-       $post->description = $request->description;
-       $post->save();
+       //$post = new Post();
+       //$post->name = $request->name;
+       //$post->description = $request->description;
+       //$post->save();
+       $validated = $request->validated();
+      // Post::create([
+       //     'name'=>$request->name,
+         //   'description'=>$request->description,
+        //    'category_id'=>$request->category
+       //]);
+       Post::create($validated);
        return redirect('/posts');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        $post = Post::findOrFail($id);
         return view('show',compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        $post = Post::findOrFail($id);
-        return view('edit',compact('post'));
+        $categories = Category::all();
+        return view('edit',compact('post','categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StorePostRequest $request, Post $post)
     {
-        $post = Post::findOrFail($id);
-        $post->name = $request->name;
-        $post->description = $request->description;
-        $post->save();
+        $validated = $request->validated();
+        $post->update($validated);
+       
         return redirect('/posts');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        Post::findOrFail($id)->delete();
+       $post->delete();
         return redirect('/posts');
     }
 }
