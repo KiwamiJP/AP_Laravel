@@ -8,8 +8,5 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
-        host: process.env.VITE_HOST || 'localhost', // Load from .env or fallback to localhost
-        port: process.env.VITE_PORT || 5173,       // Load from .env or fallback to 5173
-    },
+   
 });
