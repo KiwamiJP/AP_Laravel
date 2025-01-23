@@ -20,6 +20,9 @@
                 <p class="card-text">
                 {{$post->description}}
                 </p>
+                <p class="card-text">
+                   Category: {{$post->category->name}}
+                </p>
                 <a href="/posts" class="btn btn-primary">Back</a>
            </div><hr>
            
